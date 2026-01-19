@@ -6,6 +6,7 @@ description: Run lint + format + tests, then commit with a meaningful message
 # /commit
 
 ## Steps
+
 1. Run lint, format, tests:
    - `npm run lint`
    - `npm run format`

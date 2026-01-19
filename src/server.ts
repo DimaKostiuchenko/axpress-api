@@ -10,13 +10,11 @@ const server = app.listen(PORT, () => {
   logger.info(`Server is running at http://localhost:${PORT}`);
 });
 
-// Graceful shutdown handler
 const shutdown = async (signal: string) => {
   logger.info(`${signal} received, shutting down gracefully...`);
 
   server.close(async () => {
     logger.info('HTTP server closed');
-
     try {
       await closeRedisConnection();
       logger.info('Redis connection closed');
