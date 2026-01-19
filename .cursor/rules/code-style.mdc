@@ -1,0 +1,29 @@
+# Code Style (KISS/DRY/SOLID)
+
+## General
+- Keep functions small and single-purpose.
+- Prefer composition over inheritance.
+- Avoid hidden side effects; be explicit about inputs/outputs.
+- Reuse shared logic via utilities or services, not copy-paste.
+
+## TypeScript
+- Use `strict` mode; no `any` without explicit justification.
+- Prefer `type` for DTOs, `interface` for contracts.
+- Keep DTOs separate from persistence models.
+- Do not leak ORM/DB types outside repositories.
+
+## Naming
+- `PascalCase` for classes/types, `camelCase` for variables/functions.
+- Files and folders: `kebab-case`.
+
+## Controllers
+- Thin: validate, map, call service, map result, return response.
+- No direct DB calls; no complex business rules.
+
+## Services
+- Business logic only; no HTTP/Express objects.
+- Always return domain DTOs or primitives.
+
+## Errors
+- Use typed error classes for domain failures.
+- One central error handler maps to HTTP status and response shape.

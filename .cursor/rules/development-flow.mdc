@@ -1,0 +1,19 @@
+# Development Flow
+
+## Scope
+- Applies to all code changes in this repository.
+
+## Workflow
+- Define acceptance criteria before coding.
+- Update validators/DTOs first, then services, then controllers/routes.
+- Add error mapping and structured logs.
+- Tests: unit for services/validators, integration for critical routes.
+- Run lint + format + tests before commit.
+
+## TDD
+- Use TDD for complex business logic or high-risk changes.
+- For simple wiring, implement first, test after.
+
+## Commits
+- Commit small, coherent changes that compile and pass tests.
+- One topic per commit; avoid mixing refactors with features.

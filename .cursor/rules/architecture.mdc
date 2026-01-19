@@ -1,0 +1,41 @@
+# Architecture (SoC)
+
+## Goals
+- Clear layer boundaries, no cross-layer leakage.
+- Small, composable modules; avoid hidden side effects.
+- Scale features by adding folders, not by growing files.
+
+## Project Structure
+- `src/app.ts` — create express app, global middleware, routes.
+- `src/server.ts` — http server bootstrap, graceful shutdown.
+- `src/config/` — typed env/config loader.
+- `src/routes/` — register routes and versioning.
+- `src/controllers/` — request orchestration, DTO mapping.
+- `src/services/` — business logic, use cases.
+- `src/repositories/` — DB/external data access.
+- `src/middlewares/` — auth, rate limit, error handler.
+- `src/validators/` — request/response schemas.
+- `src/utils/` — pure helpers only.
+- `src/types/` — shared types/interfaces.
+- `tests/` — unit/integration tests.
+
+## Layer Rules
+- `routes` call `controllers` only.
+- `controllers` call `services` only.
+- `services` call `repositories` and external clients.
+- `repositories` do I/O only, no business rules.
+- `validators` are used in `controllers` or `middlewares`.
+- `middlewares` are infrastructure concerns only.
+- `utils` must be pure and dependency-free.
+
+## Dependency Direction
+- Downstream only: routes → controllers → services → repositories.
+- No import from a lower layer to a higher layer.
+- Cross-module communication via interfaces in `types` or local DTOs.
+
+## Request Flow
+- Validate input → map to DTO → service → repo/external → map response.
+
+## Error Flow
+- Throw domain errors from `services`.
+- Map domain errors to HTTP errors in `controllers` or `middlewares`.

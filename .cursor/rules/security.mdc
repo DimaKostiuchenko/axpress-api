@@ -1,0 +1,24 @@
+# Security & Protections
+
+## Baseline
+- Validate all input; reject unknown fields.
+- Sanitize payloads to prevent injection.
+- Apply rate limits on public endpoints.
+- Use secure headers and CORS allowlist.
+- Store secrets in env, never in code.
+
+## Auth
+- Use access tokens with short TTL.
+- Hash passwords with `bcrypt`.
+- Enforce authorization at middleware or controller boundary.
+
+## Logging
+- Structured logs only; never log secrets/PII.
+- Add request id and user id (when present).
+
+## Base Packages
+- Runtime: `express`, `cors`, `helmet`, `dotenv`.
+- Security: `express-rate-limit`, `hpp`, `express-mongo-sanitize` (as needed).
+- Validation: `zod` or `joi`.
+- Logging: `pino`, `pino-http`.
+- Auth: `jsonwebtoken`, `bcrypt`.

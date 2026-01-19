@@ -1,0 +1,14 @@
+# Testing
+
+## Minimum
+- Unit tests for services and validators.
+- Integration tests for critical routes.
+- Cover auth, permissions, and error cases.
+
+## Tools
+- Test runner: `jest` or `vitest`.
+- HTTP tests: `supertest`.
+
+## Rules
+- No network calls in unit tests; mock repositories.
+- Keep fixtures minimal and deterministic.
