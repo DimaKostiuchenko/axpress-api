@@ -16,7 +16,8 @@
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force"
+    "moduleDetection": "force",
+    "types": ["node"]
   },
   "include": ["src/**/*"]
 }

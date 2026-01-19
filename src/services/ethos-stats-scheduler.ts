@@ -7,12 +7,17 @@ export class EthosStatsScheduler {
   // Use ReturnType to avoid environment-specific type issues (Node vs Browser)
   private timeoutId: ReturnType<typeof setTimeout> | null = null;
   private isStopping = false;
+  private isRunning = false;
+  private isStarted = false;
 
   public async start(): Promise<void> {
-    if (this.timeoutId !== null) {
+    if (this.isStarted) {
       logger.warn('Scheduler is already running');
       return;
     }
+
+    this.isStopping = false;
+    this.isStarted = true;
 
     logger.info(
       { intervalMs: SCHEDULE_INTERVAL_MS },
@@ -20,12 +25,13 @@ export class EthosStatsScheduler {
     );
 
     // Start the recursive loop
-    await this.run();
+    void this.run();
   }
 
   private async run(): Promise<void> {
-    if (this.isStopping) return;
+    if (this.isStopping || this.isRunning) return;
 
+    this.isRunning = true;
     try {
       logger.info('Starting cache refresh cycle');
       await ethosStatsService.refreshCache();
@@ -33,6 +39,7 @@ export class EthosStatsScheduler {
     } catch (error) {
       logger.error({ err: error }, 'Cache refresh cycle failed');
     } finally {
+      this.isRunning = false;
       // Schedule the next run ONLY after the current one is finished
       // This prevents overlapping executions
       if (!this.isStopping) {
@@ -43,6 +50,7 @@ export class EthosStatsScheduler {
 
   public stop(): void {
     this.isStopping = true;
+    this.isStarted = false;
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
       this.timeoutId = null;

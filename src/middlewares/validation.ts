@@ -27,12 +27,25 @@ export const validate =
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
+        const details = error.errors.flatMap((err) => {
+          if (err.code === 'unrecognized_keys' && err.keys?.length) {
+            return err.keys.map((key) => ({
+              path: key,
+              message: `Unrecognized key: ${key}`,
+            }));
+          }
+
+          return [
+            {
+              path: err.path.join('.'),
+              message: err.message,
+            },
+          ];
+        });
+
         res.status(400).json({
           error: 'Validation failed',
-          details: error.errors.map((err) => ({
-            path: err.path.join('.'),
-            message: err.message,
-          })),
+          details,
           requestId: req.id,
         });
         return;

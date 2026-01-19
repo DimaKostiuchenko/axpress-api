@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 
 import { ethosStatsService } from '../services/ethos-stats-service.js';
 
@@ -7,8 +7,13 @@ import { ethosStatsService } from '../services/ethos-stats-service.js';
  */
 export const getEthosStats = async (
   _req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<void> => {
-  const stats = await ethosStatsService.getStats();
-  res.json(stats);
+  try {
+    const stats = await ethosStatsService.getStats();
+    res.json(stats);
+  } catch (error) {
+    next(error);
+  }
 };

@@ -10,7 +10,7 @@ const envSchema = z.object({
     .string()
     .optional()
     .default('3000')
-    .transform((val) => parseInt(val, 10))
+    .transform((val: string) => parseInt(val, 10))
     .pipe(z.number().int().positive()),
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
@@ -33,13 +33,13 @@ const envSchema = z.object({
     .string()
     .optional()
     .default('900000') // 15 minutes
-    .transform((val) => parseInt(val, 10))
+    .transform((val: string) => parseInt(val, 10))
     .pipe(z.number().int().positive()),
   RATE_LIMIT_MAX_REQUESTS: z
     .string()
     .optional()
     .default('100')
-    .transform((val) => parseInt(val, 10))
+    .transform((val: string) => parseInt(val, 10))
     .pipe(z.number().int().positive()),
 });
 
@@ -47,6 +47,7 @@ const envSchema = z.object({
  * Validated environment variables
  * Throws error if validation fails
  */
+
 export const env = envSchema.parse({
   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,

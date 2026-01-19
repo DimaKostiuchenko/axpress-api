@@ -26,3 +26,11 @@ Source API:
 ## Configuration
 
 - `REDIS_URL` — Redis connection string.
+
+## Project Setup
+
+From the repo root:
+
+```
+docker compose up --build
+```
