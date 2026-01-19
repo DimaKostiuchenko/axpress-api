@@ -46,9 +46,7 @@ describe('EthosStatsScheduler', () => {
         { intervalMs: 12 * 60 * 60 * 1000 },
         'Starting Ethos stats scheduler'
       );
-      expect(logger.info).toHaveBeenCalledWith(
-        'Starting cache refresh cycle'
-      );
+      expect(logger.info).toHaveBeenCalledWith('Starting cache refresh cycle');
     });
 
     it('should prevent multiple starts (idempotent)', async () => {
@@ -212,10 +210,10 @@ describe('EthosStatsScheduler', () => {
 
       await scheduler.start();
       expect(ethosStatsService.refreshCache).toHaveBeenCalledTimes(1);
-      
+
       // Wait for the first run to complete
       await vi.runAllTicks();
-      
+
       scheduler.stop();
 
       // Try to start again after stop

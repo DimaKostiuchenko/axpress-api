@@ -1,11 +1,10 @@
 import axios from 'axios';
 
+import { env } from '../config/env.js';
 import { logger } from '../config/logger.js';
 import { redisRepository } from '../repositories/redis-repository.js';
 import type { EthosStats } from '../types/ethos-stats.js';
 
-const ETHOS_API_URL =
-  'https://api.ethos.network/api/v2/votes/stats?type=attestation&activityId=223';
 const REDIS_KEY = 'ethos:stats';
 const CACHE_TTL_SECONDS = 43200; // 12 hours
 
@@ -17,10 +16,10 @@ export class EthosStatsService {
    */
   async fetchStatsFromApi(): Promise<EthosStats> {
     try {
-      logger.info({ url: ETHOS_API_URL }, 'Fetching stats from Ethos API');
-      const response = await axios.get<EthosStats>(ETHOS_API_URL);
+      logger.info({ url: env.ETHOS_API_URL }, 'Fetching stats from Ethos API');
+      const response = await axios.get<EthosStats>(env.ETHOS_API_URL);
       logger.info(
-        { url: ETHOS_API_URL, status: response.status },
+        { url: env.ETHOS_API_URL, status: response.status },
         'Successfully fetched stats from Ethos API'
       );
       return response.data;
@@ -30,7 +29,7 @@ export class EthosStatsService {
         logger.error(
           {
             err: error,
-            url: ETHOS_API_URL,
+            url: env.ETHOS_API_URL,
             status: error.response?.status,
           },
           errorMessage

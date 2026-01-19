@@ -28,7 +28,7 @@ vi.mock('../../src/config/redis.js', () => {
     expire: vi.fn().mockReturnThis(),
     exec: mockExec,
   });
-  
+
   return {
     redisClient: {
       get: vi.fn().mockResolvedValue(null),

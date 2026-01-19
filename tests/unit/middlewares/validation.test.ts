@@ -286,7 +286,11 @@ describe('Validation Middleware', () => {
 
       // Use a schema that throws a non-Zod error
       const validateWithCustomSchema = validate({ query: customSchema });
-      validateWithCustomSchema(mockReq as Request, mockRes as Response, mockNext);
+      validateWithCustomSchema(
+        mockReq as Request,
+        mockRes as Response,
+        mockNext
+      );
 
       expect(mockNext).toHaveBeenCalledWith(expect.any(Error));
       expect(json).not.toHaveBeenCalled();

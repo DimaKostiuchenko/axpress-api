@@ -12,6 +12,7 @@ const envSchema = z.object({
     .default('3000')
     .transform((val: string) => parseInt(val, 10))
     .pipe(z.number().int().positive()),
+
   NODE_ENV: z
     .enum(['development', 'production', 'test'])
     .optional()
@@ -41,6 +42,14 @@ const envSchema = z.object({
     .default('100')
     .transform((val: string) => parseInt(val, 10))
     .pipe(z.number().int().positive()),
+
+  // Ethos API configuration
+  ETHOS_API_URL: z
+    .string()
+    .url()
+    .default(
+      'https://api.ethos.network/api/v2/votes/stats?type=attestation&activityId=223'
+    ),
 });
 
 /**
@@ -56,6 +65,7 @@ export const env = envSchema.parse({
   CORS_ORIGIN: process.env.CORS_ORIGIN,
   RATE_LIMIT_WINDOW_MS: process.env.RATE_LIMIT_WINDOW_MS,
   RATE_LIMIT_MAX_REQUESTS: process.env.RATE_LIMIT_MAX_REQUESTS,
+  ETHOS_API_URL: process.env.ETHOS_API_URL,
 });
 
 /**
