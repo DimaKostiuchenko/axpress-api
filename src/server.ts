@@ -1,13 +1,14 @@
 import 'dotenv/config';
 
 import { app } from './app.js';
+import { env } from './config/env.js';
 import { logger } from './config/logger.js';
 import { closeRedisConnection } from './config/redis.js';
+import { ethosStatsScheduler } from './services/ethos-stats-scheduler.js';
 
-const PORT = process.env.PORT || 3000;
-
-const server = app.listen(PORT, () => {
-  logger.info(`Server is running at http://localhost:${PORT}`);
+const server = app.listen(env.PORT, () => {
+  logger.info(`Server is running at http://localhost:${env.PORT}`);
+  ethosStatsScheduler.start();
 });
 
 const shutdown = async (signal: string) => {
@@ -16,6 +17,7 @@ const shutdown = async (signal: string) => {
   server.close(async () => {
     logger.info('HTTP server closed');
     try {
+      ethosStatsScheduler.stop();
       await closeRedisConnection();
       logger.info('Redis connection closed');
       process.exit(0);

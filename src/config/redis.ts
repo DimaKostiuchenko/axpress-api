@@ -1,9 +1,8 @@
 import { Redis } from 'ioredis';
 import { logger } from './logger.js';
+import { env } from './env.js';
 
-const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
-
-export const redisClient = new Redis(REDIS_URL, {
+export const redisClient = new Redis(env.REDIS_URL, {
   retryStrategy: (times: number) => {
     const delay = Math.min(times * 50, 2000);
     return delay;
